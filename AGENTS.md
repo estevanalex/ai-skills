@@ -83,6 +83,27 @@ Conventions:
   `zip -r releases/incident-report-analysis-1.0.zip incident-report-analysis/`
   (bash).
 
+### README updates (mandatory)
+
+- **When a new skill is added or an existing skill's version is bumped,
+  `README.md` must be updated in the same commit.** The README is the
+  consumer-facing entry point — a skill that exists in the repo but not
+  in the README table is effectively undiscoverable.
+- The skills table in `README.md` must always reflect:
+  - The skill name (linking to its `SKILL.md`).
+  - The current version (matching `metadata.version` in the skill's
+    frontmatter).
+  - A one-line purpose.
+  - A download link to the zip in `releases/`
+    (e.g. `./releases/incident-report-analysis-1.0.zip`).
+- When a version bumps, update the version column and the download link
+  to point at the new zip. Do not leave stale links to old zips in the
+  table — old zips stay in `releases/` for pinning, but the table always
+  shows the latest.
+- The install instructions section (`## Installing a skill`) is
+  reference material and does not need per-skill updates unless the
+  supported AI companion apps or their skills directories change.
+
 ## Writing and editing skills
 
 - **Specificity over generality.** The default failure mode for AI-generated
@@ -139,6 +160,9 @@ documents, not executable code. Verification is by re-reading:
 - Confirm the version in `SKILL.md` frontmatter was incremented if any
   skill file changed, and that a matching `<skill-name>-<version>.zip`
   exists in `releases/` with the same content.
+- Confirm `README.md` skills table shows the correct current version and
+  a download link pointing at the matching zip in `releases/`. No stale
+  version numbers or dead links.
 
 ## Frameworks in scope
 
