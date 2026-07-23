@@ -17,10 +17,16 @@ a `SKILL.md` entry point plus any supporting modules it references.
 
 1. Download the zip for the skill and version you want from the table above
    (or browse all releases in the [`releases/`](./releases/) directory).
-2. Unzip the file. You will get a single folder named after the skill
-   (e.g. `incident-report-analysis/`) containing `SKILL.md` and any
-   `modules/` it references.
-3. Copy that folder into your AI companion app's skills directory:
+2. Create a directory named after the skill in your AI companion app's
+   skills directory (e.g. `incident-report-analysis/`).
+3. Unzip the downloaded file into that directory. The zip contains
+   `SKILL.md` and `modules/` at the root — no parent folder wrapper — so
+   the files go directly into the directory you created.
+4. Restart your AI companion app (or start a new session). The skill is
+   now available as a slash command (e.g. `/incident-report-analysis`) and
+   may also be invoked autonomously by the agent when relevant.
+
+   Skills directories by app:
 
    | App | Skills directory |
    |---|---|
@@ -30,10 +36,6 @@ a `SKILL.md` entry point plus any supporting modules it references.
    | Claude Code (project) | `.agents/skills/` in your project root |
    | Claude Code (global) | `~/.agents/skills/` |
    | Windsurf (project) | `.windsurf/skills/` in your project root |
-
-4. Restart your AI companion app (or start a new session). The skill is
-   now available as a slash command (e.g. `/incident-report-analysis`) and
-   may also be invoked autonomously by the agent when relevant.
 
 ### Pinning a version
 
