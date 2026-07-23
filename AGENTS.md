@@ -66,22 +66,25 @@ Conventions:
   instead of navigating the folder structure.
 - **Zip filename**: `<skill-name>-<version>.zip` (e.g.
   `incident-report-analysis-1.0.zip`).
-- **Zip contents**: the skill directory at the repo root, preserved as the
-  top-level folder inside the zip. The user unzips and gets
-  `incident-report-analysis/` with all files inside — ready to drop into
-  their `.devin/skills/`, `.agents/skills/`, or equivalent directory for
-  their AI companion app.
+- **Zip contents**: the files inside the skill directory, at the zip root
+  — no parent folder wrapper. The zip contains `SKILL.md` and `modules/`
+  directly, not `incident-report-analysis/SKILL.md`. The user creates a
+  named directory in their skills folder (e.g.
+  `.devin/skills/incident-report-analysis/`) and unzips into it.
 - **Where zips live**: in a `releases/` directory at the repo root, one
   zip per published version. Old zips are kept (not overwritten) so
   consumers can pin to a specific version if needed.
 - **Create the zip after the version bump and before the commit**, so the
   zip always matches the version in the frontmatter. The zip is committed
   alongside the skill changes in the same commit.
-- Command (run from repo root):
-  `Compress-Archive -Path incident-report-analysis/ -DestinationPath releases/incident-report-analysis-1.0.zip`
-  (PowerShell) or
-  `zip -r releases/incident-report-analysis-1.0.zip incident-report-analysis/`
-  (bash).
+- Command (run from the skill's root folder, not the repo root):
+  `Compress-Archive -Path * -DestinationPath ..\releases\incident-report-analysis-1.0.zip`
+  (PowerShell, from inside `incident-report-analysis/`) or
+  `zip -r ../releases/incident-report-analysis-1.0.zip *`
+  (bash, from inside `incident-report-analysis/`).
+  The key difference: zip the skill's *contents* (`*`), not the skill
+  *directory* (`incident-report-analysis/`), so no parent folder wrapper
+  ends up inside the zip.
 
 ### README updates (mandatory)
 
