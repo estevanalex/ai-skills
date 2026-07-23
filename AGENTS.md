@@ -71,20 +71,40 @@ Conventions:
   directly, not `incident-report-analysis/SKILL.md`. The user creates a
   named directory in their skills folder (e.g.
   `.devin/skills/incident-report-analysis/`) and unzips into it.
+- **Path separators must be forward slashes (`/`), not backslashes.** The
+  ZIP spec requires forward slashes; PowerShell's `Compress-Archive` on
+  Windows .NET uses backslashes, which cross-platform tools (Claude
+  Desktop, etc.) reject with "path with invalid characters". Use the
+  Python command below, not `Compress-Archive`.
 - **Where zips live**: in a `releases/` directory at the repo root, one
   zip per published version. Old zips are kept (not overwritten) so
   consumers can pin to a specific version if needed.
 - **Create the zip after the version bump and before the commit**, so the
   zip always matches the version in the frontmatter. The zip is committed
   alongside the skill changes in the same commit.
-- Command (run from the skill's root folder, not the repo root):
-  `Compress-Archive -Path * -DestinationPath ..\releases\incident-report-analysis-1.0.zip`
-  (PowerShell, from inside `incident-report-analysis/`) or
-  `zip -r ../releases/incident-report-analysis-1.0.zip *`
-  (bash, from inside `incident-report-analysis/`).
-  The key difference: zip the skill's *contents* (`*`), not the skill
-  *directory* (`incident-report-analysis/`), so no parent folder wrapper
-  ends up inside the zip.
+- Command (run from the repo root, using Python for spec-compliant
+  forward-slash paths):
+
+  ```python
+  python -c "
+  import zipfile, os
+  skill, version, out = 'incident-report-analysis', '1.0', 'releases/incident-report-analysis-1.0.zip'
+  with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zf:
+      for root, _, files in os.walk(skill):
+          for f in files:
+              full = os.path.join(root, f)
+              rel = os.path.relpath(full, skill).replace(os.sep, '/')
+              zf.write(full, rel)
+  "
+  ```
+
+  On macOS/Linux, `zip -r releases/incident-report-analysis-1.0.zip
+  incident-report-analysis/*` (bash, from inside the skill directory) also
+  produces forward-slash paths. Do **not** use PowerShell
+  `Compress-Archive` — it produces backslash paths that cross-platform
+  tools reject.
+- The key difference: zip the skill's *contents*, not the skill
+  *directory*, so no parent folder wrapper ends up inside the zip.
 
 ### README updates (mandatory)
 
