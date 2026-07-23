@@ -39,6 +39,71 @@ Conventions:
 - No new external file dependencies: a skill's modules reference each other
   by relative path, all within the skill's own directory.
 
+## Versioning and packaging
+
+### Versioning
+
+- Every skill carries a version in its `SKILL.md` frontmatter:
+  `metadata.version: "MAJOR.MINOR"`.
+- **Any change to any file in a skill's directory must increment the
+  version number.** No exceptions, no "just a typo" carve-outs — a consumer
+  who downloads v1.0 and then sees v1.0 again with different content cannot
+  trust the package.
+- Use semantic-ish increments:
+  - **MINOR bump** (e.g. 1.0 → 1.1): new sections, new modules, refined
+    content, expanded guidance. Backwards-compatible.
+  - **MAJOR bump** (e.g. 1.1 → 2.0): restructured workflow, removed or
+    renamed modules, changed output shape, breaking changes for consumers
+    who built on the previous version.
+- The version is the single source of truth for "what's in the package".
+  The zip filename embeds it (see below), so a consumer can tell at a
+  glance whether they have the latest.
+
+### Packaging
+
+- When publishing a new skill or updating an existing one, create a zip
+  package of the skill directory so users can download a single file
+  instead of navigating the folder structure.
+- **Zip filename**: `<skill-name>-<version>.zip` (e.g.
+  `incident-report-analysis-1.0.zip`).
+- **Zip contents**: the skill directory at the repo root, preserved as the
+  top-level folder inside the zip. The user unzips and gets
+  `incident-report-analysis/` with all files inside — ready to drop into
+  their `.devin/skills/`, `.agents/skills/`, or equivalent directory for
+  their AI companion app.
+- **Where zips live**: in a `releases/` directory at the repo root, one
+  zip per published version. Old zips are kept (not overwritten) so
+  consumers can pin to a specific version if needed.
+- **Create the zip after the version bump and before the commit**, so the
+  zip always matches the version in the frontmatter. The zip is committed
+  alongside the skill changes in the same commit.
+- Command (run from repo root):
+  `Compress-Archive -Path incident-report-analysis/ -DestinationPath releases/incident-report-analysis-1.0.zip`
+  (PowerShell) or
+  `zip -r releases/incident-report-analysis-1.0.zip incident-report-analysis/`
+  (bash).
+
+### README updates (mandatory)
+
+- **When a new skill is added or an existing skill's version is bumped,
+  `README.md` must be updated in the same commit.** The README is the
+  consumer-facing entry point — a skill that exists in the repo but not
+  in the README table is effectively undiscoverable.
+- The skills table in `README.md` must always reflect:
+  - The skill name (linking to its `SKILL.md`).
+  - The current version (matching `metadata.version` in the skill's
+    frontmatter).
+  - A one-line purpose.
+  - A download link to the zip in `releases/`
+    (e.g. `./releases/incident-report-analysis-1.0.zip`).
+- When a version bumps, update the version column and the download link
+  to point at the new zip. Do not leave stale links to old zips in the
+  table — old zips stay in `releases/` for pinning, but the table always
+  shows the latest.
+- The install instructions section (`## Installing a skill`) is
+  reference material and does not need per-skill updates unless the
+  supported AI companion apps or their skills directories change.
+
 ## Writing and editing skills
 
 - **Specificity over generality.** The default failure mode for AI-generated
@@ -92,6 +157,12 @@ documents, not executable code. Verification is by re-reading:
   across the skill directory).
 - Confirm the report/output template matches the workflow's output-shape
   descriptions (column lists, section order).
+- Confirm the version in `SKILL.md` frontmatter was incremented if any
+  skill file changed, and that a matching `<skill-name>-<version>.zip`
+  exists in `releases/` with the same content.
+- Confirm `README.md` skills table shows the correct current version and
+  a download link pointing at the matching zip in `releases/`. No stale
+  version numbers or dead links.
 
 ## Frameworks in scope
 
