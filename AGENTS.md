@@ -38,6 +38,14 @@ Conventions:
   assembles the output per the template.
 - No new external file dependencies: a skill's modules reference each other
   by relative path, all within the skill's own directory.
+- **The `description` field in `SKILL.md` frontmatter must not exceed 1024
+  characters.** Measured as the parsed YAML value (folded-scalar newlines
+  collapsed to spaces, leading indentation stripped). This is a hard limit
+  enforced by AI companion apps; longer descriptions may be silently
+  truncated or rejected. Prioritise: objective, scope, key triggers, and a
+  compact capability summary. Move detailed capability enumerations into
+  the SKILL.md body if needed — the description is a summary, not the full
+  spec.
 
 ## Versioning and packaging
 
@@ -186,6 +194,10 @@ documents, not executable code. Verification is by re-reading:
 - Confirm `README.md` skills table shows the correct current version and
   a download link pointing at the matching zip in `releases/`. No stale
   version numbers or dead links.
+- Confirm the `description` field in `SKILL.md` frontmatter does not
+  exceed 1024 characters (parsed YAML value). Run:
+  `python -c "import yaml; print(len(yaml.safe_load(open('SKILL.md').read().split('---',2)[1])['description']))"`
+  from the skill directory.
 
 ## Frameworks in scope
 
