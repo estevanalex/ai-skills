@@ -1,41 +1,24 @@
 ---
 name: incident-report-analysis
 metadata:
-  version: "1.1"
+  version: "1.2"
   created: "July 2026"
   author: "Estevan Chaves"
 description: >
   Analyse third-party security incident disclosures, breach reports, and
   vendor post-mortems to produce evidence-graded, kill-chain-reasoned,
-  framework-mapped control guidance whose every recommendation is tied to a
-  stated resilience improvement (reduced blast radius, faster detection,
-  shorter time-to-restore, fail-safe degradation, or verified
-  recoverability). The output is a reference document for CISO/board
-  briefing and engineering action — not a news summary. Trigger whenever
-  the user shares a link to, or asks to assess/analyse/compare, a security
-  incident writeup, breach disclosure, post-mortem, or vendor security
-  bulletin, including multi-source cases where a vendor's account and a
-  third party's account of the same incident need reconciling. Also
-  trigger on "turn this into control guidance", "map this to
-  ISO/SOC2/NIST", "what should we learn from this breach", "build a kill
-  chain for this incident", "what are our notification obligations for
-  this incident", or "validate our controls against this incident".
-  Covers conventional infrastructure/application incidents AND AI/ML-
-  specific incidents (model provider breaches, dataset pipeline
-  compromises, agentic attack tooling, ML supply chain compromise).
-  Capabilities: source reconciliation with confidence-tagged claims
-  ([C] confirmed / [I] inferred / [V] vendor-asserted); specificity pass
-  that de-generalises vague disclosures into named components, versions,
-  CVEs with CVSS vectors; kill-chain reconstruction mapped to MITRE
-  ATT&CK (Enterprise/Cloud/Mobile/ICS) and ATLAS; practical layered
-  controls (mechanism + concrete example + one-clause resilience
-  improvement) mapped to ISO 27001:2022, SOC 2, NIST CSF 2.0, NIST SP
-  800-53, and NIST AI RMF; regulatory notification flagging (GDPR, SEC,
-  NIS2, US state, sectoral); vendor remediation verification; and a
-  validation section prompting tabletop, detection-rule, restore-drill,
-  and break-glass testing of every recommended control. Not for internal
-  incident response or CVE reachability in the user's own codebase (use
-  cve-reachability-analyzer).
+  framework-mapped control guidance whose every recommendation is tied to
+  a stated resilience improvement. Output is a reference document for
+  CISO/board briefing and engineering action, not a news summary. Trigger
+  when the user shares or asks to assess/analyse/compare a security
+  incident writeup, breach disclosure, post-mortem, or vendor bulletin,
+  including multi-source cases needing reconciliation; or asks to map to
+  frameworks, build a kill chain, check notification obligations, or
+  validate controls. Covers conventional infra/app AND AI/ML incidents
+  (model provider breaches, dataset pipelines, agentic tooling, ML supply
+  chain). Includes [C]/[I]/[V] confidence tagging, CVSS extraction,
+  regulatory flagging, vendor remediation verification, validation
+  (tabletop, restore drill, break-glass).
 ---
 
 # Incident Report Analysis
